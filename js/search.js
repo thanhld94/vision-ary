@@ -58,29 +58,22 @@ function makeRequest(request) {
 }
 
 function extractDefsFromText(text) {
+  var htmlResult = document.createElement('html');
+  htmlResult.innerHTML = text;
+
   var result = [];
-  var current = text;
-  var startTarget = "<div class=\"def-content\">";
-  var endTarget = "</div>";
-  var start = current.indexOf(startTarget);
-  var count = 0;
-  while (start >= 0) {
-    if (count++ > 100) break;
-    current = current.slice(start);
-    var end = current.indexOf(endTarget);
-    result.push(current.slice(startTarget.length, end).trim());
-    current = current.slice(end);
-    start = current.indexOf(startTarget);
-  }
+  htmlResult.querySelectorAll(".def-content").forEach(function(definition) {
+    result.push(definition.innerHTML.trim());
+  });
   return result;
 }
 
-//TODO need to completely parse the raw retrieved data from dictionary.com
 function insertToResultBox(definitions) {
   var innerHtml = "";
   definitions.forEach(function(definition, index) {
-    innerHtml = innerHtml + "<p id=\"def-" + index + "\">" 
-                    + definition + "</p>";
+    console.log(definition);
+    innerHtml = innerHtml + "<div id=\"def-" + index + "\">" 
+                    + definition + "</div>";
   });
   document.querySelector("#resultBox").innerHTML = innerHtml;
 }
