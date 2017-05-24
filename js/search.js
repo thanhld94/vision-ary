@@ -97,7 +97,6 @@ function extractDefsFromText(text) {
 function insertToResultBox(definitions) {
   var innerHtml = "";
   definitions.forEach(function(definition, index) {
-    console.log(definition);
     innerHtml = innerHtml + "<div id=\"def-" + index + "\">" 
                     + definition + "</div>";
   });
