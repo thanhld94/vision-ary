@@ -1,6 +1,12 @@
 window.onload = function() {
   var button = document.querySelector("#submit");
   button.addEventListener("click", makeSearch);
+  var textField = document.querySelector("#query");
+  textField.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13) { // Enter key
+      makeSearch();
+    }
+  });
 };
 
 /** Perform a search using the content of the text field. */
