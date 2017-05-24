@@ -8,12 +8,33 @@ function makeSearch() {
   var request = createCORSRequest("GET", url);
   var promise = makeRequest(request);
   promise.then(function(text) {
-    extractDefsFromText(text).forEach(function(val) {
-      console.log(val);
-    });
+    var definitions = extractDefsFromText(text);
+    insertToResultBox(definitions);
   }).catch(function(error) {
     console.log(error);
   });
+}
+
+function getSearchUrl() {
+  var element = document.querySelector("#query");
+  var url = "http://www.dictionary.com/browse/" + element.value + "?s=t";
+  return url
+}
+
+function createCORSRequest(method, url) {
+  var request = new XMLHttpRequest();
+  if ("withCredentials" in request) {
+    // Chrome/Firefox/Opera/Safari
+    request.open(method, url);
+  } else if (typeof XDomainRequest != "undefined") {
+    // IE
+    request = new XDomainRequest();
+    request.open(method, url);
+  } else {
+    // CORS not supported
+    request = null;
+  }
+  return request;
 }
 
 function makeRequest(request) {
@@ -36,28 +57,6 @@ function makeRequest(request) {
   });
 }
 
-function createCORSRequest(method, url) {
-  var request = new XMLHttpRequest();
-  if ("withCredentials" in request) {
-    // Chrome/Firefox/Opera/Safari
-    request.open(method, url);
-  } else if (typeof XDomainRequest != "undefined") {
-    // IE
-    request = new XDomainRequest();
-    request.open(method, url);
-  } else {
-    // CORS not supported
-    request = null;
-  }
-  return request;
-}
-
-function getSearchUrl() {
-  var element = document.getElementById("query");
-  var url = "http://www.dictionary.com/browse/" + element.value + "?s=t";
-  return url
-}
-
 function extractDefsFromText(text) {
   var result = [];
   var current = text;
@@ -74,4 +73,14 @@ function extractDefsFromText(text) {
     start = current.indexOf(startTarget);
   }
   return result;
+}
+
+//TODO need to completely parse the raw retrieved data from dictionary.com
+function insertToResultBox(definitions) {
+  var innerHtml = "";
+  definitions.forEach(function(definition, index) {
+    innerHtml = innerHtml + "<p id=\"def-" + index + "\">" 
+                    + definition + "</p>";
+  });
+  document.querySelector("#resultBox").innerHTML = innerHtml;
 }
