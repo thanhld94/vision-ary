@@ -25,7 +25,7 @@ function makeSearch() {
  */
 function getSearchUrl() {
   var element = document.querySelector("#query");
-  var url = "http://www.dictionary.com/browse/" + element.value + "?s=t";
+  var url = "http://www.dictionary.com/browse/" + encodeURI(element.value);
   return url
 }
 
