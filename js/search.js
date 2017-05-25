@@ -1,11 +1,8 @@
 window.onload = function() {
-  var button = document.querySelector("#submit");
-  button.addEventListener("click", makeSearch);
-  var textField = document.querySelector("#query");
-  textField.addEventListener("keydown", function(event) {
-    if (event.keyCode === 13) { // Enter key
-      makeSearch();
-    }
+  var form = document.querySelector("#searchBox");
+  form.addEventListener("submit", function(event) {
+    makeSearch();
+    event.preventDefault();
   });
 };
 
@@ -17,7 +14,7 @@ function makeSearch() {
   promise.then(function(text) {
     var definitions = extractDefsFromText(text);
     insertToResultBox(definitions);
-  }).catch(function(error) {
+  }).catch (function(error) {
     console.log(error);
   });
 }
