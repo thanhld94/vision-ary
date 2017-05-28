@@ -1,5 +1,5 @@
 window.onload = function() {
-  var form = document.querySelector("#searchBox");
+  let form = document.querySelector("#searchBox");
   form.addEventListener("submit", function(event) {
     makeSearch();
     event.preventDefault();
@@ -8,11 +8,11 @@ window.onload = function() {
 
 /** Perform a search using the content of the text field. */
 function makeSearch() {
-  var url = getSearchUrl();
-  var request = createCORSRequest("GET", url);
-  var promise = makeRequest(request);
+  let url = getSearchUrl();
+  let request = createCORSRequest("GET", url);
+  let promise = makeRequest(request);
   promise.then(function(text) {
-    var definitions = extractDefsFromText(text);
+    let definitions = extractDefsFromText(text);
     insertToResultBox(definitions);
   }).catch (function(error) {
     console.log(error);
@@ -21,22 +21,22 @@ function makeSearch() {
 
 /** 
  * Get the url of the online dictionary website 
- * @return {String} The url of the query to the dictionary website
+ * @return {string} The url of the query to the dictionary website
  */
 function getSearchUrl() {
-  var element = document.querySelector("#query");
-  var url = "http://www.dictionary.com/browse/" + encodeURI(element.value);
+  let element = document.querySelector("#query");
+  let url = "http://www.dictionary.com/browse/" + encodeURI(element.value);
   return url
 }
 
 /** 
  * Create a http request, cross-origin resource
- * @param {String} method The type of request (PUT, GET, etc.)
- * @param {String} url The url of the dictionary website
+ * @param {string} method The type of request (PUT, GET, etc.)
+ * @param {string} url The url of the dictionary website
  * @return {XMLHttpRequest} The created request object
  */
 function createCORSRequest(method, url) {
-  var request = new XMLHttpRequest();
+  let request = new XMLHttpRequest();
   if ("withCredentials" in request) {
     // Chrome/Firefox/Opera/Safari
     request.open(method, url);
@@ -58,7 +58,7 @@ function createCORSRequest(method, url) {
  */
 function makeRequest(request) {
   return new Promise(function(succeed, fail) {
-    var result = "";
+    let result = "";
     if (request == null) {
       console.error("CORS not supported");
     } else {
@@ -78,14 +78,14 @@ function makeRequest(request) {
 
 /**
  * Extract the result definitions from a string of html
- * @param {String} text The string in html format
+ * @param {string} text The string in html format
  * @return {Array} An array of string, each is a definition
  */
 function extractDefsFromText(text) {
-  var htmlResult = document.createElement('html');
+  let htmlResult = document.createElement('html');
   htmlResult.innerHTML = text;
 
-  var result = [];
+  let result = [];
   htmlResult.querySelectorAll(".def-content").forEach(function(definition) {
     result.push(definition.innerHTML.trim());
   });
@@ -98,7 +98,7 @@ function extractDefsFromText(text) {
  * @param {Array} definintions An array of strings, each is a defintion
  */
 function insertToResultBox(definitions) {
-  var innerHtml = "";
+  let innerHtml = "";
   definitions.forEach(function(definition, index) {
     innerHtml = innerHtml + "<div id=\"def-" + index + "\">" 
                     + definition + "</div>";
