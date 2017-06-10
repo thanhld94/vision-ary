@@ -79,15 +79,25 @@ function makeRequest(request) {
 /**
  * Extract the result definitions from a string of html
  * @param {string} text The string in html format
- * @return {Array} An array of string, each is a definition
+ * @return {Array.<Object>} An array of array of definition groups
  */
 function extractDefsFromText(text) {
   let htmlResult = document.createElement('html');
   htmlResult.innerHTML = text;
 
   let result = [];
-  htmlResult.querySelectorAll(".def-content").forEach(function(definition) {
-    result.push(definition.innerHTML.trim());
+  let sourceData = htmlResult.querySelector(".source-data");
+  let defTypes = sourceData.querySelectorAll(".def-pbk.ce-spot"); 
+                                             // definition group
+  defTypes.forEach(function(defType) {
+    let group = {};
+    group.type = defType.querySelector(".dbox-pg").textContent.trim(); 
+                                       // word type class
+    group.defList = [];
+    defType.querySelectorAll(".def-content").forEach(function(definition) {
+      group.defList.push(definition.textContent.trim());
+    });
+    result.push(group);
   });
   htmlResult.remove();
   return result;
@@ -95,13 +105,19 @@ function extractDefsFromText(text) {
 
 /**
  * Change the content of the result div to the newly fetch definitions
- * @param {Array} definintions An array of strings, each is a defintion
+ * @param {Array.<Object>} definitions An array of definition groups
  */
-function insertToResultBox(definitions) {
+function insertToResultBox(defGroup) {
   let innerHtml = "";
-  definitions.forEach(function(definition, index) {
-    innerHtml = innerHtml + "<div id=\"def-" + index + "\">" 
-                    + definition + "</div>";
+  defGroup.forEach(function(group) {
+    innerHtml += "<div class=\"def-group\">" 
+                   + "<div class=\"def-type\"> <strong>" 
+                   + group.type 
+                   + "</strong> </div>";
+    group.defList.forEach(function(definition) {
+      innerHtml += "<div class=\"def-item\">" + definition + "</div>";
+    });
+    innerHtml += "</div>";
   });
   document.querySelector("#resultBox").innerHTML = innerHtml;
 }
