@@ -112,11 +112,12 @@ function insertToResultBox(defGroup) {
   defGroup.forEach(function(group) {
     innerHtml += "<div class=\"def-group\">" 
                    + "<div class=\"def-type\"> <strong>" 
-                   + group.type 
-                   + "</strong> </div>";
+                   + group.type + "</strong> </div>";
+    innerHtml += "<ul class=\"def-content\">"
     group.defList.forEach(function(definition) {
-      innerHtml += "<div class=\"def-item\">" + definition + "</div>";
+      innerHtml += "<li class=\"def-item\">" + definition + "</li>";
     });
+    innerHtml += "</ul>";
     innerHtml += "</div>";
   });
   document.querySelector("#resultBox").innerHTML = innerHtml;
