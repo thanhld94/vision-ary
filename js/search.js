@@ -1,6 +1,6 @@
 window.onload = function() {
   let form = document.querySelector("#searchBox");
-  form.addEventListener("submit", function(event) {
+  form.addEventListener("submit", (event) => {
     makeSearch();
     event.preventDefault();
   });
@@ -11,10 +11,10 @@ function makeSearch() {
   let url = getSearchUrl();
   let request = createCORSRequest("GET", url);
   let promise = makeRequest(request);
-  promise.then(function(text) {
+  promise.then((text) => {
     let definitions = extractDefsFromText(text);
     insertToResultBox(definitions);
-  }).catch (function(error) {
+  }).catch ((error) => {
     console.log(error);
   });
 }
@@ -57,18 +57,18 @@ function createCORSRequest(method, url) {
  * @return {Promise} The promise object of the response
  */
 function makeRequest(request) {
-  return new Promise(function(succeed, fail) {
+  return new Promise((succeed, fail) => {
     let result = "";
     if (request == null) {
       console.error("CORS not supported");
     } else {
-      request.onload = function() {
+      request.onload = () => {
         succeed(request.responseText);
       };
-      request.onerror = function() {
+      request.onerror = () => {
         fail(new Error("Request failed: " + req.statusText));
       };
-      request.addEventListener("error", function() {
+      request.addEventListener("error", () => {
         fail(new Error("Network error"));
       });
       request.send();
@@ -89,12 +89,12 @@ function extractDefsFromText(text) {
   let sourceData = htmlResult.querySelector(".source-data");
   let defTypes = sourceData.querySelectorAll(".def-pbk.ce-spot"); 
                                              // definition group
-  defTypes.forEach(function(defType) {
+  defTypes.forEach((defType) => {
     let group = {};
     group.type = defType.querySelector(".dbox-pg").textContent.trim(); 
                                        // word type class
     group.defList = [];
-    defType.querySelectorAll(".def-content").forEach(function(definition) {
+    defType.querySelectorAll(".def-content").forEach((definition) => {
       group.defList.push(definition.textContent.trim());
     });
     result.push(group);
@@ -109,12 +109,12 @@ function extractDefsFromText(text) {
  */
 function insertToResultBox(defGroup) {
   let innerHtml = "";
-  defGroup.forEach(function(group) {
+  defGroup.forEach((group) => {
     innerHtml += "<div class=\"def-group\">" 
                    + "<div class=\"def-type\"> <strong>" 
                    + group.type + "</strong> </div>";
     innerHtml += "<ul class=\"def-content\">"
-    group.defList.forEach(function(definition) {
+    group.defList.forEach((definition) => {
       innerHtml += "<li class=\"def-item\">" + definition + "</li>";
     });
     innerHtml += "</ul>";
