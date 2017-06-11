@@ -79,7 +79,7 @@ function makeRequest(request) {
 /**
  * Extract the result definitions from a string of html
  * @param {string} text The string in html format
- * @return {Array.<Object>} An array of array of definition groups
+ * @return {Array<Object>} An array of array of definition groups
  */
 function extractDefsFromText(text) {
   let htmlResult = document.createElement('html');
@@ -105,7 +105,7 @@ function extractDefsFromText(text) {
 
 /**
  * Change the content of the result div to the newly fetch definitions
- * @param {Array.<Object>} definitions An array of definition groups
+ * @param {Array<Object>} definitions An array of definition groups
  */
 function insertToResultBox(defGroup) {
   let innerHtml = "";
